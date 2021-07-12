@@ -1,4 +1,5 @@
 import { createGlobalStyle, ThemeProvider } from 'styled-components'
+import { OrkutStyles } from '../lib/OrkutCommons';
 
 const GlobalStyle = createGlobalStyle`
   * {
@@ -23,6 +24,8 @@ const GlobalStyle = createGlobalStyle`
     height: auto;
     display: block;
   }
+
+  ${OrkutStyles}
 `
 
 const theme = {

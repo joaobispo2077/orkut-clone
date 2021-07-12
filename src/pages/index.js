@@ -1,3 +1,4 @@
+import { OrkutMenu } from '../lib/OrkutCommons';
 import Box from '../components/Box';
 
 import MainGrid from '../components/MainGrid';
@@ -10,22 +11,24 @@ function ProfileSideBar() {
   )
 }
 
-
 export default function Home() {
   return (
-    <MainGrid>
+    <>
+      <OrkutMenu />
+      <MainGrid>
 
-      <ProfileSideBar />
+        <ProfileSideBar />
 
-      <div style={{ gridArea: 'feed' }}>
-        <Box>Bem vindo</Box>
-      </div>
+        <div style={{ gridArea: 'feed' }}>
+          <Box>Bem vindo</Box>
+        </div>
 
-      <div style={{ gridArea: 'comunity' }}>
-        <Box>Lista amigos</Box>
-        <Box>Comunidades</Box>
-      </div>
+        <div style={{ gridArea: 'comunity' }}>
+          <Box>Lista amigos</Box>
+          <Box>Comunidades</Box>
+        </div>
 
-    </MainGrid>
+      </MainGrid>
+    </>
   )
 }
