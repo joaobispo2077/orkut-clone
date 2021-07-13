@@ -1,4 +1,4 @@
-import { OrkutMenu, OrkutNostalgicIconSet } from '../lib/OrkutCommons';
+import { OrkutMenu, OrkutNostalgicIconSet, OrkutProfileSidebarMenuDefault } from '../lib/OrkutCommons';
 import Box from '../components/Box';
 
 import MainGrid from '../components/MainGrid';
@@ -7,7 +7,20 @@ import { ProfileRelationsBoxWrapper } from '../components/ProfileRelations';
 function ProfileSideBar({ githubUsername }) {
   return (
     <div className="profile" style={{ gridArea: 'profile' }}>
-      <Box><img src={`https://github.com/${githubUsername}.png`} /></Box>
+      <Box>
+        <img src={`https://github.com/${githubUsername}.png`} />
+
+        <hr />
+
+        <p>
+          <a href={`https://github.com/${githubUsername}`} className="boxLink">
+            {githubUsername}
+          </a>
+        </p>
+        <hr />
+
+        <OrkutProfileSidebarMenuDefault />
+      </Box>
     </div>
   )
 }
