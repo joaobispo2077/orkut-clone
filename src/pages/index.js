@@ -9,7 +9,7 @@ import { ProfileRelationsBoxWrapper } from '../components/ProfileRelations';
 function ProfileSideBar({ githubUsername }) {
   return (
     <div className="profile" style={{ gridArea: 'profile' }}>
-      <Box>
+      <Box as="aside">
         <img src={`https://github.com/${githubUsername}.png`} />
 
         <hr />
@@ -38,15 +38,24 @@ export default function Home() {
     'Viviane-Queiroz'
   ];
 
-  const [communities, setCommunities] = useState([]);
+  const [communities, setCommunities] = useState([{
+    title: 'Eu odeio acordar cedo',
+    image: 'https://alurakut.vercel.app/capa-comunidade-01.jpg'
+  }]);
   const [communityName, setCommunityName] = useState('');
   const [communityURL, setCommunityURL] = useState('');
 
   const handleCreateCommunity = (event) => {
     event.preventDefault();
 
-    if (communityName.length > 0 && communityURL.length > 0) {
-      setCommunities((prevCommunities) => prevCommunities.concat({ name: communityName, url: communityURL }));
+    if (communityName.length > 0 && communityURL.length > 0 && communities.length < 6) {
+      // const formData = new FormData(event.target);
+      // const newCommunity = {
+      //   title: formData.get('title'),
+      //   image: formData.get('image'),
+      // }
+
+      setCommunities((prevCommunities) => prevCommunities.concat({ name: communityName, image: communityURL }));
       setCommunityName('');
       setCommunityURL('');
     }
@@ -54,7 +63,7 @@ export default function Home() {
 
   return (
     <>
-      <OrkutMenu />
+      <OrkutMenu githubUser={githubUsername} />
       <MainGrid>
         <div className="profile">
           <ProfileSideBar githubUsername={githubUsername} />
@@ -102,6 +111,26 @@ export default function Home() {
         </div>
 
         <div style={{ gridArea: 'comunity' }}>
+
+          {communities.length > 0 && (
+            <ProfileRelationsBoxWrapper>
+              <h2 className="smallTitle">
+                Comunidades - {communities.length}
+              </h2>
+
+              <ul>
+                {communities.map((community, index) => (
+                  <li key={community.title}>
+                    <a>
+                      <img src={community.image} alt={community.title} />
+                      <span>{community.title}</span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </ProfileRelationsBoxWrapper>
+          )}
+
           <ProfileRelationsBoxWrapper>
             <h2 className="smallTitle">
               Pessoas da comunidade - {favoritePersons.length}
@@ -118,25 +147,6 @@ export default function Home() {
               ))}
             </ul>
           </ProfileRelationsBoxWrapper>
-
-          {communities.length > 0 && (
-            <ProfileRelationsBoxWrapper>
-              <h2 className="smallTitle">
-                Comunidades
-              </h2>
-
-              <ul>
-                {communities.map((community, index) => (
-                  <li key={community.name}>
-                    <a>
-                      <img src={community.url} alt={community.name} />
-                      <span>{community.name}</span>
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </ProfileRelationsBoxWrapper>
-          )}
 
         </div>
 
