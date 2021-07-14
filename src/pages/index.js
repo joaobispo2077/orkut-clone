@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { OrkutMenu, OrkutNostalgicIconSet, OrkutProfileSidebarMenuDefault } from '../lib/OrkutCommons';
 
@@ -29,14 +29,14 @@ function ProfileSideBar({ githubUsername }) {
 
 export default function Home() {
   const githubUsername = 'joaobispo2077';
-  const favoritePersons = [
+  const [favoritePersons, setFavoritePersons] = useState([
     'Viviane-Queiroz',
     'Viviane-Queiroz',
     'Viviane-Queiroz',
     'Viviane-Queiroz',
     'Viviane-Queiroz',
     'Viviane-Queiroz'
-  ];
+  ]);
 
   const [communities, setCommunities] = useState([{
     title: 'Eu odeio acordar cedo',
@@ -61,6 +61,16 @@ export default function Home() {
     }
   }
 
+  const fetchFavoritePersons = async () => {
+    const response = await fetch('https://api.github.com/users/joaobispo2077/following');
+    const follwingPersons = await response.json();
+    const folloingNames = follwingPersons.map(favoritePerson => favoritePerson.login);
+    setFavoritePersons(folloingNames);
+  }
+
+  useEffect(() => {
+    fetchFavoritePersons();
+  }, []);
   return (
     <>
       <OrkutMenu githubUser={githubUsername} />
