@@ -42,7 +42,7 @@ export default function Home() {
   const [communityName, setCommunityName] = useState('');
   const [communityURL, setCommunityURL] = useState('');
 
-  const handleCreateCommunity = (event) => {
+  const handleCreateCommunity = async (event) => {
     event.preventDefault();
 
     if (communityName.length > 0 && communityURL.length > 0 && communities.length < 6) {
@@ -52,7 +52,15 @@ export default function Home() {
       //   image: formData.get('image'),
       // }
 
-      setCommunities((prevCommunities) => prevCommunities.concat({ name: communityName, image: communityURL }));
+      await fetch('/api/communities', {
+        method: 'POST',
+        body: JSON.stringify({
+          title: communityName,
+          image: communityURL
+        })
+      });
+
+      setCommunities((prevCommunities) => prevCommunities.concat({ title: communityName, image: communityURL }));
       setCommunityName('');
       setCommunityURL('');
     }
