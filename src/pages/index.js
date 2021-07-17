@@ -38,10 +38,7 @@ export default function Home() {
     'Viviane-Queiroz'
   ]);
 
-  const [communities, setCommunities] = useState([{
-    title: 'Eu odeio acordar cedo',
-    image: 'https://alurakut.vercel.app/capa-comunidade-01.jpg'
-  }]);
+  const [communities, setCommunities] = useState([]);
   const [communityName, setCommunityName] = useState('');
   const [communityURL, setCommunityURL] = useState('');
 
@@ -68,8 +65,40 @@ export default function Home() {
     setFavoritePersons(folloingNames);
   }
 
+  const fethCommunities = async () => {
+    const response = await fetch('https://graphql.datocms.com/', {
+      method: 'POST',
+      headers: {
+        'Authorization': 'dot-not-hard-code',
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify({
+        "query": `
+    query {
+      allCommunities {
+        id
+        title
+        image
+      }
+    }
+    `
+      })
+    });
+
+    const payload = await response.json();
+    const { allCommunities } = payload.data;
+    console.log(payload
+      , allCommunities);
+
+    setCommunities(allCommunities);
+  }
+
   useEffect(() => {
     fetchFavoritePersons();
+    fethCommunities();
+
+
   }, []);
   return (
     <>
