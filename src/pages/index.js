@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react';
+import nookies from 'nookies';
+import jwt from 'jsonwebtoken';
 
 import { OrkutMenu, OrkutNostalgicIconSet, OrkutProfileSidebarMenuDefault } from '../lib/OrkutCommons';
 
@@ -27,8 +29,8 @@ function ProfileSideBar({ githubUsername }) {
   )
 }
 
-export default function Home() {
-  const githubUsername = 'joaobispo2077';
+export default function Home(props) {
+  const { githubUsername } = props;
   const [favoritePersons, setFavoritePersons] = useState([
     'Viviane-Queiroz',
     'Viviane-Queiroz',
@@ -77,7 +79,7 @@ export default function Home() {
     const response = await fetch('https://graphql.datocms.com/', {
       method: 'POST',
       headers: {
-        'Authorization': 'dot-not-hard-code',
+        'Authorization': '9969f1eb2bf6730cf127aa36f6bcb7',
         'Content-Type': 'application/json',
         'Accept': 'application/json'
       },
@@ -200,4 +202,36 @@ export default function Home() {
       </MainGrid>
     </>
   )
+}
+
+
+export async function getServerSideProps(context) {
+  const cookies = nookies.get(context);
+  const token = cookies.USER_TOKEN;
+
+
+  const response = await fetch('https://alurakut.vercel.app/api/auth', {
+    headers: {
+      'Authorization': token
+    },
+  });
+
+  const { isAuthenticated } = await response.json();
+
+  if (!isAuthenticated) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false
+      }
+    }
+  }
+
+
+  const { githubUser } = jwt.decode(token);
+  return {
+    props: {
+      githubUsername: githubUser,
+    }
+  }
 }
